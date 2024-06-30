@@ -1,0 +1,4 @@
+name: SBWUpgradeSpawner
+version: '1.0-SNAPSHOT'
+main: br.com.impalinha.sbwupgradespawner.Main
+api-version: '1.20'
