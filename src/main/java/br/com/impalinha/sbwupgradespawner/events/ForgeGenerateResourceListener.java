@@ -15,8 +15,8 @@ public class ForgeGenerateResourceListener implements Listener {
     public void onForgeItemSpawn(BedwarsResourceSpawnEvent event) {
         double level = event.getSpawner().getLevel();
         int levelMinimoParaComecarAVimEsmeralda = 2;
-        if(level >= levelMinimoParaComecarAVimEsmeralda) {
-            if(Material.GOLD_INGOT == event.getResource().getType()) {
+        if (level >= levelMinimoParaComecarAVimEsmeralda) {
+            if (Material.GOLD_INGOT == event.getResource().getType()) {
                 Location location = event.getSpawner().getLocation();
                 int delayAteSpawnarEsmeraldaAposOOuro = 5;
                 int quantidadeDeEsmeraldaGerada = (int) level;
