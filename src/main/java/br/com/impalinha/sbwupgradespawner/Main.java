@@ -33,14 +33,21 @@ public final class Main extends JavaPlugin {
     }
 
     public void init() {
-        plugin = this;
-        saveDefaultConfig();
-        registrarEventos();
-        registrarComandos();
-        getLogger().info(" ");
-        getLogger().info(" Plugin SBI-Generators Ligado");
-        getLogger().info(" Created By Impalinha");
-        getLogger().info(" ");
+        if(!Bukkit.getPluginManager().getPlugin("BedWars").isEnabled()) {
+            Bukkit.getPluginManager().disablePlugin(this);
+            getLogger().info("");
+            getLogger().info(" Plugin SBI-Generators Depende do Plugin BedWars");
+            getLogger().info(" Desabilitando o plugin");
+            getLogger().info("");
+        } else {
+	        plugin = this;
+	        saveDefaultConfig();
+	        registrarEventos();
+	        registrarComandos();
+            getLogger().info(" ");
+            getLogger().info(" Plugin SBI-Generators Ligado");
+            getLogger().info(" Created By Impalinha");
+            getLogger().info(" ");
+        }
     }
-
 }
