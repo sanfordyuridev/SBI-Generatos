@@ -1,5 +1,6 @@
 package br.com.impalinha.sbwupgradespawner;
 
+import br.com.impalinha.sbwupgradespawner.commands.ReloadConfig;
 import br.com.impalinha.sbwupgradespawner.events.ForgeGenerateResourceListener;
 import br.com.impalinha.sbwupgradespawner.events.ForgeUpgradeListener;
 import org.bukkit.Bukkit;
@@ -27,9 +28,15 @@ public final class Main extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new ForgeUpgradeListener(), this);
     }
 
+    public void registrarComandos() {
+        getCommand("sbi").setExecutor(new ReloadConfig());
+    }
+
     public void init() {
         plugin = this;
+        saveDefaultConfig();
         registrarEventos();
+        registrarComandos();
         getLogger().info(" ");
         getLogger().info(" Plugin SBI-Generators Ligado");
         getLogger().info(" Created By Impalinha");

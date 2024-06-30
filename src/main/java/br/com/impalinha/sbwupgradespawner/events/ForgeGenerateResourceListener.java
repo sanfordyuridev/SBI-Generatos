@@ -9,18 +9,26 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.screamingsandals.bedwars.api.events.BedwarsResourceSpawnEvent;
 
+import java.util.Random;
+
 public class ForgeGenerateResourceListener implements Listener {
 
     @EventHandler
     public void onForgeItemSpawn(BedwarsResourceSpawnEvent event) {
         double level = event.getSpawner().getLevel();
-        int levelMinimoParaComecarAVimEsmeralda = 2;
+        Main plugin = Main.plugin;
+        int levelMinimoParaComecarAVimEsmeralda = plugin.getConfig().getInt("start-level-emerald");
+        Bukkit.broadcastMessage("Level atual da forja do time " + event.getSpawner().getTeam().getName() + " = " + level);
         if (level >= levelMinimoParaComecarAVimEsmeralda) {
             if (Material.GOLD_INGOT == event.getResource().getType()) {
                 Location location = event.getSpawner().getLocation();
-                int delayAteSpawnarEsmeraldaAposOOuro = 5;
-                int quantidadeDeEsmeraldaGerada = (int) level;
-                Bukkit.getScheduler().runTaskLater(Main.plugin, () ->
+                int delayAteSpawnarEsmeraldaAposOOuro = plugin.getConfig().getInt("delay-spawn-emerald-after-gold");
+                int minQuantidadeDeEsmeraldaGerada = plugin.getConfig().getInt("min-amount-emerald-generated");
+                int maxQuantidadeDeEsmeraldaGerada = plugin.getConfig().getInt("max-amount-emerald-generated");
+                Random random = new Random();
+                int quantidadeDeEsmeraldaGerada = random.nextInt((maxQuantidadeDeEsmeraldaGerada - minQuantidadeDeEsmeraldaGerada) + 1)
+                        + minQuantidadeDeEsmeraldaGerada;
+                Bukkit.getScheduler().runTaskLater(plugin, () ->
                                 location.getWorld().dropItem(location,
                                         new ItemStack(Material.EMERALD, quantidadeDeEsmeraldaGerada)),
                         (delayAteSpawnarEsmeraldaAposOOuro * 20L));

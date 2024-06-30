@@ -1,0 +1,4 @@
+start-level-emerald: 4
+delay-spawn-emerald-after-gold: 15
+min-amount-emerald-generated: 1
+max-amount-emerald-generated: 4
