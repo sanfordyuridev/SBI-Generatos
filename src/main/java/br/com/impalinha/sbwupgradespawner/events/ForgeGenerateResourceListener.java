@@ -7,6 +7,8 @@ import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
+import org.screamingsandals.bedwars.api.BedwarsAPI;
+import org.screamingsandals.bedwars.api.Team;
 import org.screamingsandals.bedwars.api.events.BedwarsResourceSpawnEvent;
 
 import java.util.Random;
@@ -18,7 +20,13 @@ public class ForgeGenerateResourceListener implements Listener {
         double level = event.getSpawner().getLevel();
         Main plugin = Main.plugin;
         int levelMinimoParaComecarAVimEsmeralda = plugin.getConfig().getInt("start-level-emerald");
-        Bukkit.broadcastMessage("Level atual da forja do time " + event.getSpawner().getTeam().getName() + " = " + level);
+
+        Team team = event.getSpawner().getTeam();
+
+        if (team != null) {
+            Bukkit.broadcastMessage("Level atual da forja do time " + team.getName() + " = " + level);
+        }
+
         if (level >= levelMinimoParaComecarAVimEsmeralda) {
             if (Material.GOLD_INGOT == event.getResource().getType()) {
                 Location location = event.getSpawner().getLocation();
