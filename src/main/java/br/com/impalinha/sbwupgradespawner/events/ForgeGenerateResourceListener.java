@@ -23,10 +23,6 @@ public class ForgeGenerateResourceListener implements Listener {
 
         Team team = event.getSpawner().getTeam();
 
-        if (team != null) {
-            Bukkit.broadcastMessage("Level atual da forja do time " + team.getName() + " = " + level);
-        }
-
         if (level >= levelMinimoParaComecarAVimEsmeralda) {
             if (Material.GOLD_INGOT == event.getResource().getType()) {
                 Location location = event.getSpawner().getLocation();
