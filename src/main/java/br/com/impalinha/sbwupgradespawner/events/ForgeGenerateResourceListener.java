@@ -21,10 +21,10 @@ public class ForgeGenerateResourceListener implements Listener {
         Main plugin = Main.plugin;
         int levelMinimoParaComecarAVimEsmeralda = plugin.getConfig().getInt("start-level-emerald");
 
-        Team team = event.getSpawner().getTeam();
-
         if (level >= levelMinimoParaComecarAVimEsmeralda) {
+            Bukkit.broadcastMessage("ItemType = " + event.getResource().getType());
             if (Material.GOLD_INGOT == event.getResource().getType()) {
+                Bukkit.broadcastMessage("Ira gerar esmeralda");
                 Location location = event.getSpawner().getLocation();
                 int delayAteSpawnarEsmeraldaAposOOuro = plugin.getConfig().getInt("delay-spawn-emerald-after-gold");
                 int minQuantidadeDeEsmeraldaGerada = plugin.getConfig().getInt("min-amount-emerald-generated");

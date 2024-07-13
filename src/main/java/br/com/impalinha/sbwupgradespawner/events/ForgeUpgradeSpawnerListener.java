@@ -1,6 +1,7 @@
 package br.com.impalinha.sbwupgradespawner.events;
 
 import br.com.impalinha.sbwupgradespawner.Main;
+import br.com.impalinha.sbwupgradespawner.utils.LevelUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -10,8 +11,9 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.screamingsandals.bedwars.api.game.ItemSpawner;
 
-public class ForgeUpgradeSpawnerListener implements Listener {
+import java.util.List;
 
+public class ForgeUpgradeSpawnerListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onForgeUpgradeBoughtSpawner(InventoryClickEvent event) {
         if(event.getWhoClicked().getOpenInventory().getTitle().contains("shop")) {
@@ -19,30 +21,27 @@ public class ForgeUpgradeSpawnerListener implements Listener {
             if(displayName != null) {
                 if(displayName.contains("Forja")) {
                     event.setCancelled(true);
-                    ItemSpawner itemSpawner = Main.playerItemSpawner.get(event.getWhoClicked());
-                    int diamantesNecessarios = -1;
-                    if (itemSpawner.getLevel() != 5) {
-                        double levelQueVai = itemSpawner.getLevel() + 1;
-                        if (levelQueVai == 1) {
-                            diamantesNecessarios = 2;
-                        } else if (levelQueVai == 2) {
-                            diamantesNecessarios = 4;
-                        } else if (levelQueVai == 3) {
-                            diamantesNecessarios = 6;
-                        } else if (levelQueVai == 4) {
-                            diamantesNecessarios = 8;
-                        }
+                    List<ItemSpawner> itemSpawner = Main.playerItemSpawner.get(event.getWhoClicked());
+                    double level = itemSpawner.get(0).getLevel();
+                    int diamantesNecessarios = LevelUtils.getDiamantesNecessarios((int) level);
 
+                    double levelQueVailevelQueVai = level + 1;
+                    ItemStack diamante = LevelUtils.getDiamante();
+                    diamante.setAmount(diamantesNecessarios);
+                    if(level == 5)  {
+                        event.getWhoClicked().sendMessage(ChatColor.RED + "O gerador do seu time já atingiu o nível máximo.");
+                    } else {
                         if(event.getWhoClicked().getInventory().containsAtLeast(new ItemStack(Material.DIAMOND), diamantesNecessarios)) {
-                            event.getWhoClicked().sendMessage(ChatColor.GREEN + "Você evoluiu o gerador do seu time!");
-                            event.getWhoClicked().getInventory().remove(new ItemStack(Material.DIAMOND, diamantesNecessarios));
-                            itemSpawner.setLevel(levelQueVai);
+                            event.getWhoClicked().sendMessage(ChatColor.GREEN + "Você evoluiu o level do gerador do seu time!");
+                            for(ItemSpawner i : itemSpawner) {
+                                i.setLevel(levelQueVailevelQueVai);
+                                i.setCurrentLevel(levelQueVailevelQueVai);
+                            }
+                            event.getWhoClicked().getInventory().remove(diamante);
                         } else {
                             event.getWhoClicked().sendMessage(ChatColor.RED + "Você não possui diamantes o suficiente.");
                         }
                     }
-                    event.getWhoClicked().sendMessage("Level atual Spawner: " + itemSpawner.getLevel());
-                    event.getWhoClicked().sendMessage("Time: " + itemSpawner.getTeam());
                 }
             }
         }

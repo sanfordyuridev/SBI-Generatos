@@ -10,11 +10,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.screamingsandals.bedwars.api.game.ItemSpawner;
 
 import java.util.HashMap;
+import java.util.List;
 
 public final class Main extends JavaPlugin {
 
     public static Main plugin;
-    public static HashMap<Player, ItemSpawner> playerItemSpawner;
+    public static HashMap<Player, List<ItemSpawner>> playerItemSpawner;
 
     @Override
     public void onEnable() {
