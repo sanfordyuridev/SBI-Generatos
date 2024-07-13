@@ -38,8 +38,9 @@ public abstract class LevelUtils {
         }
     }
 
-    public static ItemStack getDiamante() {
+    public static ItemStack getDiamante(int qtd) {
         ItemStack itemStack = new ItemStack(Material.DIAMOND);
+        itemStack.setAmount(qtd);
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(ChatColor.BLUE + "Diamond");
         itemStack.setItemMeta(itemMeta);

@@ -15,7 +15,7 @@ import java.util.List;
 public final class Main extends JavaPlugin {
 
     public static Main plugin;
-    public static HashMap<Player, List<ItemSpawner>> playerItemSpawner;
+    public static HashMap<Player, List<ItemSpawner>> gameTimeItemSpawner;
 
     @Override
     public void onEnable() {
@@ -49,7 +49,7 @@ public final class Main extends JavaPlugin {
             getLogger().info("");
         } else {
 	        plugin = this;
-            playerItemSpawner = new HashMap<>();
+            gameTimeItemSpawner = new HashMap<>();
 	        saveDefaultConfig();
 	        registrarEventos();
 	        registrarComandos();

@@ -22,9 +22,7 @@ public class ForgeGenerateResourceListener implements Listener {
         int levelMinimoParaComecarAVimEsmeralda = plugin.getConfig().getInt("start-level-emerald");
 
         if (level >= levelMinimoParaComecarAVimEsmeralda) {
-            Bukkit.broadcastMessage("ItemType = " + event.getResource().getType());
             if (Material.GOLD_INGOT == event.getResource().getType()) {
-                Bukkit.broadcastMessage("Ira gerar esmeralda");
                 Location location = event.getSpawner().getLocation();
                 int delayAteSpawnarEsmeraldaAposOOuro = plugin.getConfig().getInt("delay-spawn-emerald-after-gold");
                 int minQuantidadeDeEsmeraldaGerada = plugin.getConfig().getInt("min-amount-emerald-generated");
@@ -32,9 +30,16 @@ public class ForgeGenerateResourceListener implements Listener {
                 Random random = new Random();
                 int quantidadeDeEsmeraldaGerada = random.nextInt((maxQuantidadeDeEsmeraldaGerada - minQuantidadeDeEsmeraldaGerada) + 1)
                         + minQuantidadeDeEsmeraldaGerada;
+
+                if(level == 5) {
+                    quantidadeDeEsmeraldaGerada = quantidadeDeEsmeraldaGerada * 2;
+                }
+
+                int finalQuantidadeDeEsmeraldaGerada = quantidadeDeEsmeraldaGerada;
+
                 Bukkit.getScheduler().runTaskLater(plugin, () ->
                                 location.getWorld().dropItem(location,
-                                        new ItemStack(Material.EMERALD, quantidadeDeEsmeraldaGerada)),
+                                        new ItemStack(Material.EMERALD, finalQuantidadeDeEsmeraldaGerada)),
                         (delayAteSpawnarEsmeraldaAposOOuro * 20L));
             }
         }

@@ -3,7 +3,6 @@ package br.com.impalinha.sbwupgradespawner.events;
 import br.com.impalinha.sbwupgradespawner.Main;
 import br.com.impalinha.sbwupgradespawner.utils.LevelUtils;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -21,17 +20,16 @@ public class ForgeUpgradeSpawnerListener implements Listener {
             if(displayName != null) {
                 if(displayName.contains("Forja")) {
                     event.setCancelled(true);
-                    List<ItemSpawner> itemSpawner = Main.playerItemSpawner.get(event.getWhoClicked());
+                    List<ItemSpawner> itemSpawner = Main.gameTimeItemSpawner.get(event.getWhoClicked());
                     double level = itemSpawner.get(0).getLevel();
                     int diamantesNecessarios = LevelUtils.getDiamantesNecessarios((int) level);
 
                     double levelQueVailevelQueVai = level + 1;
-                    ItemStack diamante = LevelUtils.getDiamante();
-                    diamante.setAmount(diamantesNecessarios);
+                    ItemStack diamante = LevelUtils.getDiamante(diamantesNecessarios);
                     if(level == 5)  {
                         event.getWhoClicked().sendMessage(ChatColor.RED + "O gerador do seu time já atingiu o nível máximo.");
                     } else {
-                        if(event.getWhoClicked().getInventory().containsAtLeast(new ItemStack(Material.DIAMOND), diamantesNecessarios)) {
+                        if(event.getWhoClicked().getInventory().containsAtLeast(diamante, diamantesNecessarios)) {
                             event.getWhoClicked().sendMessage(ChatColor.GREEN + "Você evoluiu o level do gerador do seu time!");
                             for(ItemSpawner i : itemSpawner) {
                                 i.setLevel(levelQueVailevelQueVai);

@@ -13,24 +13,15 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.screamingsandals.bedwars.api.RunningTeam;
-import org.screamingsandals.bedwars.api.Team;
 import org.screamingsandals.bedwars.api.events.BedwarsOpenShopEvent;
 import org.screamingsandals.bedwars.api.game.ItemSpawner;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class OpenUpgradeStoreListener implements Listener {
-
-    private HashMap<Team, Integer> contadorPorTime;
-
-    public OpenUpgradeStoreListener() {
-        contadorPorTime = new HashMap<>();
-    }
-
-
     @EventHandler
     public void onUpgradeBought(BedwarsOpenShopEvent event) {
         if (event.getStore().getShopCustomName().equalsIgnoreCase("TeamUpgrades")) {
@@ -47,7 +38,7 @@ public class OpenUpgradeStoreListener implements Listener {
                     InventoryView openInventory = event.getPlayer().getOpenInventory();
                     Inventory invUpgrade = openInventory.getTopInventory();
 
-                   Main.playerItemSpawner.put(event.getPlayer(), updateInventory(event, invUpgrade, previousLevel));
+                   Main.gameTimeItemSpawner.put(event.getPlayer(), updateInventory(event, invUpgrade, previousLevel));
 
                 }
             }.runTaskTimer(Main.plugin, 0L, 1L);
@@ -69,7 +60,11 @@ public class OpenUpgradeStoreListener implements Listener {
         lore.add("");
 
         List<ItemSpawner> filteredItemSpawners = itemSpawners.stream()
-                .filter(itemSpawner -> teamOfPlayer.getName().equals(itemSpawner.getTeam().getName()))
+                .filter(itemSpawner ->
+                        Objects.nonNull(itemSpawner.getTeam()) &&
+                                Objects.nonNull(itemSpawner.getTeam().getName()) &&
+                                teamOfPlayer.getName().equals(itemSpawner.getTeam().getName())
+                )
                 .collect(Collectors.toList());
 
         ItemSpawner is = filteredItemSpawners.get(0);
@@ -86,6 +81,9 @@ public class OpenUpgradeStoreListener implements Listener {
         int diamantesNecessarios = LevelUtils.getDiamantesNecessarios((int) currentLevel);
 
         if(currentLevel != 5) {
+            for(ItemStack i : event.getPlayer().getInventory().getContents()) {
+                Bukkit.broadcastMessage("ITEM: " + i.toString());
+            }
             if (event.getPlayer().getInventory().containsAtLeast(new ItemStack(Material.DIAMOND), diamantesNecessarios)) {
                 lore.add(ChatColor.GREEN + "Clique para subir o Level.");
             } else {
