@@ -7,11 +7,11 @@ import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
-import org.screamingsandals.bedwars.api.BedwarsAPI;
-import org.screamingsandals.bedwars.api.Team;
 import org.screamingsandals.bedwars.api.events.BedwarsResourceSpawnEvent;
 
 import java.util.Random;
+
+import static br.com.impalinha.sbwupgradespawner.utils.Constants.*;
 
 public class ForgeGenerateResourceListener implements Listener {
 
@@ -24,9 +24,9 @@ public class ForgeGenerateResourceListener implements Listener {
         if (level >= levelMinimoParaComecarAVimEsmeralda) {
             if (Material.GOLD_INGOT == event.getResource().getType()) {
                 Location location = event.getSpawner().getLocation();
-                int delayAteSpawnarEsmeraldaAposOOuro = plugin.getConfig().getInt("delay-spawn-emerald-after-gold");
-                int minQuantidadeDeEsmeraldaGerada = plugin.getConfig().getInt("min-amount-emerald-generated");
-                int maxQuantidadeDeEsmeraldaGerada = plugin.getConfig().getInt("max-amount-emerald-generated");
+                int delayAteSpawnarEsmeraldaAposOOuro = plugin.getConfig().getInt(START_LEVEL_EMERALD);
+                int minQuantidadeDeEsmeraldaGerada = plugin.getConfig().getInt(MIN_AMOUNT_EMERALD);
+                int maxQuantidadeDeEsmeraldaGerada = plugin.getConfig().getInt(MAX_AMOUNT_EMERALD);
                 Random random = new Random();
                 int quantidadeDeEsmeraldaGerada = random.nextInt((maxQuantidadeDeEsmeraldaGerada - minQuantidadeDeEsmeraldaGerada) + 1)
                         + minQuantidadeDeEsmeraldaGerada;

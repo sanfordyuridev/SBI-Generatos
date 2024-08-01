@@ -1,12 +1,11 @@
 package br.com.impalinha.sbwupgradespawner;
 
 import br.com.impalinha.sbwupgradespawner.commands.ReloadConfig;
-import br.com.impalinha.sbwupgradespawner.events.ForgeGenerateResourceListener;
-import br.com.impalinha.sbwupgradespawner.events.ForgeUpgradeSpawnerListener;
-import br.com.impalinha.sbwupgradespawner.events.OpenUpgradeStoreListener;
+import br.com.impalinha.sbwupgradespawner.events.*;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.screamingsandals.bedwars.api.BedwarsAPI;
 import org.screamingsandals.bedwars.api.game.ItemSpawner;
 
 import java.util.HashMap;
@@ -15,6 +14,7 @@ import java.util.List;
 public final class Main extends JavaPlugin {
 
     public static Main plugin;
+    public static BedwarsAPI bw;
     public static HashMap<Player, List<ItemSpawner>> gameTimeItemSpawner;
 
     @Override
@@ -32,8 +32,8 @@ public final class Main extends JavaPlugin {
 
     public void registrarEventos() {
         Bukkit.getPluginManager().registerEvents(new ForgeGenerateResourceListener(), this);
-        Bukkit.getPluginManager().registerEvents(new OpenUpgradeStoreListener(), this);
-        Bukkit.getPluginManager().registerEvents(new ForgeUpgradeSpawnerListener(), this);
+        Bukkit.getPluginManager().registerEvents(new InteractUpgradeNpcListener(bw), this);
+        Bukkit.getPluginManager().registerEvents(new ForgeUpgradeSpawnerListener(bw, this), this);
     }
 
     public void registrarComandos() {
@@ -49,6 +49,7 @@ public final class Main extends JavaPlugin {
             getLogger().info("");
         } else {
 	        plugin = this;
+            bw = BedwarsAPI.getInstance();
             gameTimeItemSpawner = new HashMap<>();
 	        saveDefaultConfig();
 	        registrarEventos();
