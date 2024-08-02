@@ -19,4 +19,12 @@ public class Constants {
     public static int SLOT_FORJA = 13;
     public static int SLOT_ESPADA = 10;
     public static int SLOT_ARMADURA = 11;
+
+    public static String ESPADA_NOME = "Espada";
+    public static String FORJA_NOME = "Forja";
+    public static String ARMADURA_NOME = "Armadura";
+
+    public static int CONDICAO_LEVEL_MAXIMO_ATINGIDO = 1;
+    public static int CONDICAO_NAO_TEM_DINA = 2;
+    public static int CONDICAO_PODE_UPAR = -1;
 }

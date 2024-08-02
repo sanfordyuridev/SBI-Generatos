@@ -4,19 +4,22 @@ import br.com.impalinha.sbwupgradespawner.interfaces.IUpgrade;
 import br.com.impalinha.sbwupgradespawner.utils.LevelUtils;
 import br.com.impalinha.sbwupgradespawner.utils.TipoUpgrade;
 import io.github.pronze.sba.game.IGameStorage;
+import io.github.pronze.sba.utils.ShopUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.screamingsandals.bedwars.api.BedwarsAPI;
 import org.screamingsandals.bedwars.api.RunningTeam;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
-import static br.com.impalinha.sbwupgradespawner.utils.Constants.MAX_LEVEL_ARMADURA;
-import static br.com.impalinha.sbwupgradespawner.utils.Constants.SLOT_ARMADURA;
+import static br.com.impalinha.sbwupgradespawner.utils.Constants.*;
 import static br.com.impalinha.sbwupgradespawner.utils.LevelUtils.hasEnoughDiamonds;
 
 public class ArmaduraUpgrade implements IUpgrade {
@@ -39,15 +42,16 @@ public class ArmaduraUpgrade implements IUpgrade {
         loreArmadura.add((currentLevelArmadura >= 4 ? ChatColor.BOLD + "" + ChatColor.GREEN + "✓ " : ChatColor.RED + "✗ ") + ChatColor.GRAY + "Nível 2: Proteção II, " + ChatColor.AQUA + "16 Diamantes ");
         loreArmadura.add("");
 
-        if (currentLevelArmadura != getMaxLevel()) {
-            if (canUpgrade(player, currentLevelArmadura, gameStorage)) {
-                loreArmadura.add(ChatColor.GREEN + "Clique para subir o Level.");
-            } else {
-                loreArmadura.add(ChatColor.RED + "Você não tem Diamantes o suficiente.");
-            }
-        } else {
+        int canUP = canUpgrade(player, currentLevelArmadura, gameStorage);
+
+        if (canUP == CONDICAO_PODE_UPAR) {
+            loreArmadura.add(ChatColor.GREEN + "Clique para subir o Level.");
+        } else if(canUP == CONDICAO_NAO_TEM_DINA) {
+            loreArmadura.add(ChatColor.RED + "Você não tem Diamantes o suficiente.");
+        } else if(canUP == CONDICAO_LEVEL_MAXIMO_ATINGIDO) {
             loreArmadura.add(ChatColor.GREEN + "Level máximo atingido");
         }
+
 
         itemMetaArmadura.setLore(loreArmadura);
         itemMetaArmadura.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
@@ -71,12 +75,40 @@ public class ArmaduraUpgrade implements IUpgrade {
     }
 
     @Override
-    public boolean canUpgrade(Player player, int currentLevel, IGameStorage gameStorage) {
-        return hasEnoughDiamonds(player, getDiamantesNecessarios(currentLevel), LevelUtils.getDiamante(1));
+    public int canUpgrade(Player player, int currentLevel, IGameStorage gameStorage) {
+        if(!hasEnoughDiamonds(player, getDiamantesNecessarios(currentLevel), LevelUtils.getDiamante(1))) {
+            return CONDICAO_NAO_TEM_DINA;
+        } else if(getCurrentLevel(player, gameStorage, BedwarsAPI.getInstance().getGameOfPlayer(player).getTeamOfPlayer(player)) >= getMaxLevel()) {
+            return CONDICAO_LEVEL_MAXIMO_ATINGIDO;
+        } else {
+            return CONDICAO_PODE_UPAR;
+        }
     }
 
     @Override
     public int getSlot() {
         return SLOT_ARMADURA;
+    }
+
+    @Override
+    public String getNome() {
+        return ARMADURA_NOME;
+    }
+
+    @Override
+    public String getNomeEncantamento() {
+        return "Proteção";
+    }
+
+    @Override
+    public void setLevel(RunningTeam team, IGameStorage gameStorage, int novoLevel) {
+        gameStorage.setProtectionLevel(team, novoLevel);
+        team.getConnectedPlayers().forEach(teamPlayer -> {
+            Arrays.stream(teamPlayer.getInventory().getContents())
+                    .filter(Objects::nonNull)
+                    .forEach(item -> {
+                        ShopUtil.applyTeamEnchants(teamPlayer, item);
+                    });
+        });
     }
 }

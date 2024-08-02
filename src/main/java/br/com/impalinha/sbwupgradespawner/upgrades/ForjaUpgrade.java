@@ -1,5 +1,6 @@
 package br.com.impalinha.sbwupgradespawner.upgrades;
 
+import br.com.impalinha.sbwupgradespawner.Main;
 import br.com.impalinha.sbwupgradespawner.interfaces.IUpgrade;
 import br.com.impalinha.sbwupgradespawner.utils.LevelUtils;
 import br.com.impalinha.sbwupgradespawner.utils.TipoUpgrade;
@@ -18,8 +19,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static br.com.impalinha.sbwupgradespawner.utils.Constants.MAX_LEVEL_FORJA;
-import static br.com.impalinha.sbwupgradespawner.utils.Constants.SLOT_FORJA;
+import static br.com.impalinha.sbwupgradespawner.utils.Constants.*;
 import static br.com.impalinha.sbwupgradespawner.utils.LevelUtils.hasEnoughDiamonds;
 
 public class ForjaUpgrade implements IUpgrade {
@@ -42,13 +42,13 @@ public class ForjaUpgrade implements IUpgrade {
         loreForja.add((currentLevelForja >= 5 ? ChatColor.BOLD + "" + ChatColor.GREEN + "✓ " : ChatColor.RED + "✗ ") + ChatColor.GRAY + "Nível 4: + 200% de Recursos, " + ChatColor.AQUA + "8 Diamantes ");
         loreForja.add("");
 
-        if (currentLevelForja != getMaxLevel()) {
-            if (canUpgrade(player, currentLevelForja, gameStorage)) {
-                loreForja.add(ChatColor.GREEN + "Clique para subir o Level.");
-            } else {
-                loreForja.add(ChatColor.RED + "Você não tem Diamantes o suficiente.");
-            }
-        } else {
+        int canUP = canUpgrade(player, currentLevelForja, gameStorage);
+
+        if (canUP == CONDICAO_PODE_UPAR) {
+            loreForja.add(ChatColor.GREEN + "Clique para subir o Level.");
+        } else if(canUP == CONDICAO_NAO_TEM_DINA) {
+            loreForja.add(ChatColor.RED + "Você não tem Diamantes o suficiente.");
+        } else if(canUP == CONDICAO_LEVEL_MAXIMO_ATINGIDO) {
             loreForja.add(ChatColor.GREEN + "Level máximo atingido");
         }
 
@@ -83,12 +83,39 @@ public class ForjaUpgrade implements IUpgrade {
     }
 
     @Override
-    public boolean canUpgrade(Player player, int currentLevel, IGameStorage gameStorage) {
-        return hasEnoughDiamonds(player, getDiamantesNecessarios(currentLevel), LevelUtils.getDiamante(1));
+    public int canUpgrade(Player player, int currentLevel, IGameStorage gameStorage) {
+        if(!hasEnoughDiamonds(player, getDiamantesNecessarios(currentLevel), LevelUtils.getDiamante(1))) {
+            return CONDICAO_NAO_TEM_DINA;
+        } else if(getCurrentLevel(player, gameStorage, BedwarsAPI.getInstance().getGameOfPlayer(player).getTeamOfPlayer(player)) >= getMaxLevel()) {
+            return CONDICAO_LEVEL_MAXIMO_ATINGIDO;
+        } else {
+           return CONDICAO_PODE_UPAR;
+        }
     }
 
     @Override
     public int getSlot() {
         return SLOT_FORJA;
+    }
+
+    @Override
+    public String getNome() {
+        return FORJA_NOME;
+    }
+
+    @Override
+    public String getNomeEncantamento() {
+        return "Forja";
+    }
+
+    @Override
+    public void setLevel(RunningTeam team, IGameStorage gameStorage, int novoLevel) {
+        Player player = team.getConnectedPlayers().get(0);
+        List<ItemSpawner> itemSpawner = Main.gameTimeItemSpawner.get(player);
+
+        for(ItemSpawner i : itemSpawner) {
+            i.setLevel(novoLevel);
+            i.setCurrentLevel(novoLevel);
+        }
     }
 }

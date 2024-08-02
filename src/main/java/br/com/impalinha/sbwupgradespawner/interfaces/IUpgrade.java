@@ -10,6 +10,9 @@ public interface IUpgrade {
     int getCurrentLevel(Player p, IGameStorage gameStorage, RunningTeam team);
     int getMaxLevel();
     int getDiamantesNecessarios(int currentLevel);
-    boolean canUpgrade(Player player, int currentLevel, IGameStorage gameStorage);
+    int canUpgrade(Player player, int currentLevel, IGameStorage gameStorage);
     int getSlot();
+    String getNome();
+    String getNomeEncantamento();
+    void setLevel(RunningTeam team, IGameStorage gameStorage, int novoLevel);
 }
