@@ -2,6 +2,9 @@ package br.com.impalinha.sbwupgradespawner.utils;
 
 import org.bukkit.ChatColor;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Constants {
     public static final String TITULO_MENU = ChatColor.DARK_GRAY + "Melhorias do Time";
 
@@ -27,4 +30,17 @@ public class Constants {
     public static int CONDICAO_LEVEL_MAXIMO_ATINGIDO = 1;
     public static int CONDICAO_NAO_TEM_DINA = 2;
     public static int CONDICAO_PODE_UPAR = -1;
+
+    public static String PERMISSION_ADMIN_SBI = "sbi.admin";
+    public static String RELOAD_CMD = "reload";
+
+    public static int SIZE_MENU = 27;
+
+    public static String NOME_DIAMANTE_PADRAO = ChatColor.BLUE + "Diamond";
+
+    public static int[] FORJA_DIAMANTE = {2, 4, 6, 8};
+    public static int[] ESPADA_DIAMANTE = {4, 16};
+    public static int[] ARMADURA_DIAMANTE = {2, 4, 8, 16};
+
+    public static Map<TipoUpgrade, int[]> REQUISITOS = new HashMap<>();
 }

@@ -9,49 +9,27 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.screamingsandals.bedwars.api.TeamColor;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import static br.com.impalinha.sbwupgradespawner.utils.Constants.*;
+
 public abstract class LevelUtils {
 
     public static int getDiamantesNecessarios(int levelAtual, TipoUpgrade tp) {
-        int diamantesNecessarios = -1;
-        if(tp.equals(TipoUpgrade.FORJA)) {
-            if (levelAtual != 5) {
-                double levelQueVai = levelAtual + 1;
-                if (levelQueVai == 2) {
-                    diamantesNecessarios = 2;
-                } else if (levelQueVai == 3) {
-                    diamantesNecessarios = 4;
-                } else if (levelQueVai == 4) {
-                    diamantesNecessarios = 6;
-                } else if (levelQueVai == 5) {
-                    diamantesNecessarios = 8;
-                }
-            }
-        } else if(tp.equals(TipoUpgrade.ESPADAS)) {
-            if (levelAtual != 3) {
-                double levelQueVai = levelAtual + 1;
-                if (levelQueVai == 2) {
-                    diamantesNecessarios = 4;
-                } else if (levelQueVai == 3) {
-                    diamantesNecessarios = 16;
-                }
-            }
-        } else if(tp.equals(TipoUpgrade.ARMADURA)) {
-            if (levelAtual != 5) {
-                double levelQueVai = levelAtual + 1;
-                if (levelQueVai == 2) {
-                    diamantesNecessarios = 2;
-                } else if (levelQueVai == 3) {
-                    diamantesNecessarios = 4;
-                } else if (levelQueVai == 4) {
-                    diamantesNecessarios = 8;
-                } else if (levelQueVai == 5) {
-                    diamantesNecessarios = 16;
-                }
-            }
+        if (!REQUISITOS.containsKey(tp)) {
+            return -1;
         }
 
-        return diamantesNecessarios;
+        int[] niveis = REQUISITOS.get(tp);
+
+        if (levelAtual < 1 || levelAtual >= niveis.length + 1) {
+            return -1;
+        }
+
+        return niveis[levelAtual - 1];
     }
+
 
     public static String retornarEmRomano(double numero) {
         if(numero == 1) {
@@ -70,14 +48,19 @@ public abstract class LevelUtils {
     public static ItemStack getDiamante(int qtd) {
         ItemStack itemStack = new ItemStack(Material.DIAMOND, qtd);
         ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.BLUE + "Diamond");
-        itemStack.setItemMeta(itemMeta);
+        if(itemMeta != null) {
+            itemMeta.setDisplayName(NOME_DIAMANTE_PADRAO);
+            itemStack.setItemMeta(itemMeta);
+        }
         return itemStack;
     }
 
     public static boolean hasEnoughDiamonds(Player player, int requiredAmount, ItemStack sampleDiamond) {
+        Inventory inventory = player.getInventory();
+        ItemStack[] contents = inventory.getContents();
         int count = 0;
-        for (ItemStack item : player.getInventory().getContents()) {
+
+        for (ItemStack item : contents) {
             if (item != null && item.isSimilar(sampleDiamond)) {
                 count += item.getAmount();
                 if (count >= requiredAmount) {
@@ -85,22 +68,33 @@ public abstract class LevelUtils {
                 }
             }
         }
+
         return false;
     }
 
     public static void removeDiamonds(Player player, int amount, ItemStack sampleDiamond) {
+        Inventory inventory = player.getInventory();
+        ItemStack[] contents = inventory.getContents();
         int remaining = amount;
-        for (ItemStack item : player.getInventory().getContents()) {
+
+        for (int i = 0; i < contents.length; i++) {
+            ItemStack item = contents[i];
             if (item != null && item.isSimilar(sampleDiamond)) {
-                if (item.getAmount() > remaining) {
-                    item.setAmount(item.getAmount() - remaining);
+                int itemAmount = item.getAmount();
+                if (itemAmount > remaining) {
+                    item.setAmount(itemAmount - remaining);
                     break;
                 } else {
-                    remaining -= item.getAmount();
-                    player.getInventory().remove(item);
+                    remaining -= itemAmount;
+                    contents[i] = null;
+                    if (remaining == 0) {
+                        break;
+                    }
                 }
             }
         }
+
+        inventory.setContents(contents);
     }
 
     public static ChatColor getColor(TeamColor tc) {
@@ -141,8 +135,7 @@ public abstract class LevelUtils {
     }
 
     public static Inventory getInvUpgrade() {
-        Inventory inv = Bukkit.createInventory(null, 27, Constants.TITULO_MENU);
-        return inv;
+        return Bukkit.createInventory(null, SIZE_MENU, Constants.TITULO_MENU);
     }
 
 }
