@@ -32,8 +32,9 @@ public class ForjaUpgrade implements IUpgrade {
         int currentLevelForja = getCurrentLevel(player, gameStorage, team);
 
         itemMetaForja.setDisplayName(ChatColor.RED + "Forja " + LevelUtils.retornarEmRomano(currentLevelForja - 1));
-        loreForja.add(ChatColor.GRAY + "Aumente o número de recursos ");
-        loreForja.add(ChatColor.GRAY + "que nascem em sua ilha.");
+        loreForja.add(ChatColor.GRAY + "Aumente o número de ");
+        loreForja.add(ChatColor.GRAY + "recursos que nascem ");
+        loreForja.add(ChatColor.GRAY + "em sua ilha.");
         loreForja.add("");
 
         loreForja.add((currentLevelForja >= 2 ? ChatColor.BOLD + "" + ChatColor.GREEN + "✓ " : ChatColor.RED + "✗ ") + ChatColor.GRAY + "Nível 1: + 50% de Recursos, " + ChatColor.AQUA + "2 Diamantes ");
