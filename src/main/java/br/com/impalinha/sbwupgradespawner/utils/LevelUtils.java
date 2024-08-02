@@ -35,6 +35,19 @@ public abstract class LevelUtils {
                     diamantesNecessarios = 16;
                 }
             }
+        } else if(tp.equals(TipoUpgrade.ARMADURA)) {
+            if (levelAtual != 5) {
+                double levelQueVai = levelAtual + 1;
+                if (levelQueVai == 2) {
+                    diamantesNecessarios = 2;
+                } else if (levelQueVai == 3) {
+                    diamantesNecessarios = 4;
+                } else if (levelQueVai == 4) {
+                    diamantesNecessarios = 8;
+                } else if (levelQueVai == 5) {
+                    diamantesNecessarios = 16;
+                }
+            }
         }
 
         return diamantesNecessarios;
