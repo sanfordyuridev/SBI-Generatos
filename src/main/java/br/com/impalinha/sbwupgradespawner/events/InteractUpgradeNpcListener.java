@@ -5,6 +5,7 @@ import br.com.impalinha.sbwupgradespawner.interfaces.IUpgrade;
 import br.com.impalinha.sbwupgradespawner.upgrades.ArmaduraUpgrade;
 import br.com.impalinha.sbwupgradespawner.upgrades.EspadasUpgrade;
 import br.com.impalinha.sbwupgradespawner.upgrades.ForjaUpgrade;
+import br.com.impalinha.sbwupgradespawner.upgrades.PicaretaUpgrade;
 import br.com.impalinha.sbwupgradespawner.utils.Constants;
 import br.com.impalinha.sbwupgradespawner.utils.LevelUtils;
 import io.github.pronze.sba.SBA;
@@ -83,7 +84,7 @@ public class InteractUpgradeNpcListener implements Listener {
         IGameStorage gameStorage = opGameStorage.orElseThrow();
         RunningTeam teamOfPlayer = api.getGameOfPlayer(player).getTeamOfPlayer(player);
 
-        List<IUpgrade> upgrades = List.of(new ForjaUpgrade(), new EspadasUpgrade(), new ArmaduraUpgrade());
+        List<IUpgrade> upgrades = List.of(new ForjaUpgrade(), new EspadasUpgrade(), new ArmaduraUpgrade(), new PicaretaUpgrade());
 
         for (IUpgrade upgrade : upgrades) {
             ItemStack upgradeItem = upgrade.createItem(player, teamOfPlayer, gameStorage);

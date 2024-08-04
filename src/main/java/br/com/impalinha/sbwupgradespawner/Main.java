@@ -43,6 +43,7 @@ public final class Main extends JavaPlugin {
         REQUISITOS.put(TipoUpgrade.FORJA, FORJA_DIAMANTE);
         REQUISITOS.put(TipoUpgrade.ESPADAS, ESPADA_DIAMANTE);
         REQUISITOS.put(TipoUpgrade.ARMADURA, ARMADURA_DIAMANTE);
+        REQUISITOS.put(TipoUpgrade.PICARETA, PICARETA_DIAMANTE);
     }
 
     public void registrarComandos() {

@@ -5,6 +5,7 @@ import br.com.impalinha.sbwupgradespawner.interfaces.IUpgrade;
 import br.com.impalinha.sbwupgradespawner.upgrades.ArmaduraUpgrade;
 import br.com.impalinha.sbwupgradespawner.upgrades.EspadasUpgrade;
 import br.com.impalinha.sbwupgradespawner.upgrades.ForjaUpgrade;
+import br.com.impalinha.sbwupgradespawner.upgrades.PicaretaUpgrade;
 import br.com.impalinha.sbwupgradespawner.utils.Constants;
 import br.com.impalinha.sbwupgradespawner.utils.LevelUtils;
 import br.com.impalinha.sbwupgradespawner.utils.TipoUpgrade;
@@ -49,7 +50,7 @@ public class ForgeUpgradeSpawnerListener implements Listener {
         HumanEntity whoClicked = event.getWhoClicked();
         if(whoClicked.getOpenInventory().getTitle().equals(Constants.TITULO_MENU)) {
             event.setCancelled(true);
-            List<IUpgrade> upgrades = List.of(new ForjaUpgrade(), new EspadasUpgrade(), new ArmaduraUpgrade());
+            List<IUpgrade> upgrades = List.of(new ForjaUpgrade(), new EspadasUpgrade(), new ArmaduraUpgrade(), new PicaretaUpgrade());
 
             for (IUpgrade upgrade : upgrades) {
                 if(event.getSlot() == upgrade.getSlot()) {

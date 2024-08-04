@@ -38,8 +38,8 @@ public class ArmaduraUpgrade implements IUpgrade {
 
         loreArmadura.add((currentLevelArmadura >= 1 ? ChatColor.BOLD + "" + ChatColor.GREEN + "✓ " : ChatColor.RED + "✗ ") + ChatColor.GRAY + "Nível 1: Proteção I, " + ChatColor.AQUA + "2 Diamantes ");
         loreArmadura.add((currentLevelArmadura >= 2 ? ChatColor.BOLD + "" + ChatColor.GREEN + "✓ " : ChatColor.RED + "✗ ") + ChatColor.GRAY + "Nível 2: Proteção II, " + ChatColor.AQUA + "4 Diamantes ");
-        loreArmadura.add((currentLevelArmadura >= 3 ? ChatColor.BOLD + "" + ChatColor.GREEN + "✓ " : ChatColor.RED + "✗ ") + ChatColor.GRAY + "Nível 2: Proteção II, " + ChatColor.AQUA + "8 Diamantes ");
-        loreArmadura.add((currentLevelArmadura >= 4 ? ChatColor.BOLD + "" + ChatColor.GREEN + "✓ " : ChatColor.RED + "✗ ") + ChatColor.GRAY + "Nível 2: Proteção II, " + ChatColor.AQUA + "16 Diamantes ");
+        loreArmadura.add((currentLevelArmadura >= 3 ? ChatColor.BOLD + "" + ChatColor.GREEN + "✓ " : ChatColor.RED + "✗ ") + ChatColor.GRAY + "Nível 3: Proteção III, " + ChatColor.AQUA + "8 Diamantes ");
+        loreArmadura.add((currentLevelArmadura >= 4 ? ChatColor.BOLD + "" + ChatColor.GREEN + "✓ " : ChatColor.RED + "✗ ") + ChatColor.GRAY + "Nível 4: Proteção IV, " + ChatColor.AQUA + "16 Diamantes ");
         loreArmadura.add("");
 
         int canUP = canUpgrade(player, currentLevelArmadura, gameStorage);

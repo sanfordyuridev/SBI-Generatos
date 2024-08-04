@@ -4,6 +4,7 @@ public enum TipoUpgrade {
 
     FORJA,
     ESPADAS,
-    ARMADURA
+    ARMADURA,
+    PICARETA
 
 }

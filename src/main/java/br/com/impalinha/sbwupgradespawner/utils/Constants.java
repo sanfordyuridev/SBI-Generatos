@@ -17,11 +17,13 @@ public class Constants {
     public static int MAX_LEVEL_FORJA = 5;
     public static int MAX_LEVEL_ARMADURA = 5;
     public static int MAX_LEVEL_ESPADAS = 2;
+    public static int MAX_LEVEL_PICARETA = 2;
 
 
     public static int SLOT_FORJA = 13;
     public static int SLOT_ESPADA = 10;
     public static int SLOT_ARMADURA = 11;
+    public static int SLOT_PICARETA = 12;
 
     public static String ESPADA_NOME = "Espada";
     public static String FORJA_NOME = "Forja";
@@ -41,6 +43,7 @@ public class Constants {
     public static int[] FORJA_DIAMANTE = {2, 4, 6, 8};
     public static int[] ESPADA_DIAMANTE = {4, 16};
     public static int[] ARMADURA_DIAMANTE = {2, 4, 8, 16};
+    public static int[] PICARETA_DIAMANTE = {2, 4};
 
     public static Map<TipoUpgrade, int[]> REQUISITOS = new HashMap<>();
 }

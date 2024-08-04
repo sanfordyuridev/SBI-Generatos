@@ -23,11 +23,11 @@ public abstract class LevelUtils {
 
         int[] niveis = REQUISITOS.get(tp);
 
-        if (levelAtual < 1 || levelAtual >= niveis.length + 1) {
+        try {
+            return niveis[levelAtual];
+        } catch (IndexOutOfBoundsException e) {
             return -1;
         }
-
-        return niveis[levelAtual - 1];
     }
 
 
